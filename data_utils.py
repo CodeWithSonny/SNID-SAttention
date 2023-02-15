@@ -45,3 +45,51 @@ def _build_vocab(filename):
 def _file_to_node_ids(filename, node_to_id):
     data = []
     len_list = []
+    with open(filename, 'r') as f:
+        for line in f:
+            if ':' in line:
+                line = line.split(':')[0]
+            seq = line.strip().split(',')
+            ix_seq = [node_to_id[x] for x in seq if x in node_to_id]
+            if len(ix_seq)>=2:
+                data.append(ix_seq)
+                len_list.append(len(ix_seq)-1)
+    size = len(data)
+    total_num = np.sum(len_list)
+    return (data, len_list, size, total_num)
+
+def to_nodes(seq, nodes):
+    return list(map(lambda x: nodes[x], seq))
+
+def read_raw_data(data_path=None):
+    train_path = data_path + '-train'
+    valid_path = data_path +  '-val'
+    test_path = data_path +  '-test'
+
+    nodes, node_to_id = _build_vocab(train_path)
+    train_data = _file_to_node_ids(train_path, node_to_id)
+    valid_data = _file_to_node_ids(valid_path, node_to_id)
+    test_data = _file_to_node_ids(test_path, node_to_id)
+    print('Node Num:' + str(len(nodes)-1)) # Exclude the masking index 0
+    print('train size:' + str(len(train_data[0])) + '; ' + 'test size:' + str(len(test_data[0])))
+    return train_data, valid_data,  test_data,  nodes, node_to_id
+
+def batch_generator(train_data, batch_size=50):
+    x = []
+    y = []
+    xs = []
+    ys = []
+    ss = []
+    train_seq = train_data[0]
+    train_steps = train_data[1]
+    batch_len = len(train_seq) // batch_size
+
+    for i in range(batch_len):
+        batch_steps = np.array(train_steps[i * batch_size : (i + 1) * batch_size])
+        max_batch_steps = batch_steps.max()
+        for j in range(batch_size):
+            seq = train_seq[i * batch_size + j]
+            padded_seq = np.pad(np.array(seq),(0, max_batch_steps-len(seq)+1),'constant') # padding with 0
+            x.append(padded_seq[:-1])
+            y.append(padded_seq[1:])
+        x = np.array(x)
