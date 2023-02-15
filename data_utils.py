@@ -93,3 +93,43 @@ def batch_generator(train_data, batch_size=50):
             x.append(padded_seq[:-1])
             y.append(padded_seq[1:])
         x = np.array(x)
+        y = np.array(y)
+        xs.append(x)
+        ys.append(y)
+        ss.append(batch_steps)
+        x = []
+        y = []
+    rest_len = len(train_steps[batch_len * batch_size : ])
+    if rest_len != 0:
+        batch_steps = np.array(train_steps[batch_len * batch_size : ])
+        max_batch_steps = batch_steps.max()
+        for j in range(rest_len):
+            seq = train_seq[batch_len * batch_size + j]
+            padded_seq = np.pad(np.array(seq),(0, max_batch_steps-len(seq)+1),'constant')
+            x.append(padded_seq[:-1])
+            y.append(padded_seq[1:])
+        x = np.array(x)
+        y = np.array(y)
+        xs.append(x)
+        ys.append(y)
+        ss.append(batch_steps)
+    # Enumerator over the batches.
+    return xs, ys, ss
+
+
+# def main():
+#     train_data, valid_data,  test_data, nodes, node_to_id = \
+#         read_raw_data('generated_data/random-exp-1024-cascades')
+
+#     x_train, y_train, seq_length = batch_generator(train_data)
+
+
+#     # print(x_train.shape)
+
+#     print(to_nodes(x_train[0][1], nodes))
+
+#     print(to_nodes(y_train[0][1], nodes))
+#     print(seq_length)
+
+# if __name__ == '__main__':
+#     main()
