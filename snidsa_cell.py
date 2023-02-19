@@ -69,3 +69,55 @@ def struc_atten(X, feat_in_matrix, A, feat_out):
         # Tile feature vectors of full graph: [[1], [2]] becomes [[1], [2], [1], [2]]
         tiled = tf.tile(linear_transf_G, (batch_size, 1))  # (BN x F')
         # Build combinations
+        combinations = tf.concat([repeated, tiled],1)  # (BN x 2F')
+        combination_slices = tf.reshape(combinations, (batch_size, -1, 2 * feat_out))  # (B x N x 2F')
+
+        dense = tf.squeeze(tf.contrib.keras.backend.dot(combination_slices, Wa), -1)  
+        # 降维成 B X N
+        comparison = tf.equal(A, tf.constant(0, dtype=tf.float32))
+        mask = tf.where(comparison, tf.ones_like(A) * -10e9, tf.zeros_like(A))
+        masked = dense + mask
+
+        struc_att = tf.nn.softmax(masked)  # (B x N)
+        struc_att = tf.nn.dropout(struc_att, 1)  # Apply dropout to normalized attention coefficients (B x N)
+
+        # Linear combination with neighbors' features
+        struc = tf.matmul(struc_att, linear_transf_G)  # (B x F')
+
+        struc = tf.nn.elu(struc)
+
+    return struc, linear_transf_X
+
+
+
+def linear(args, output_size, bias, bias_start=0.0, scope=None):
+    """Linear map: sum_i(args[i] * W[i]), where W[i] is a variable.
+    Args:
+      args: a 2D Tensor or a list of 2D, batch x n, Tensors.
+      output_size: int, second dimension of W[i].
+      bias: boolean, whether to add a bias term or not.
+      bias_start: starting value to initialize the bias; 0 by default.
+      scope: VariableScope for the created subgraph; defaults to "Linear".
+    Returns:
+      A 2D Tensor with shape [batch x output_size] equal to
+      sum_i(args[i] * W[i]), where W[i]s are newly created matrices.
+    Raises:
+      ValueError: if some of the arguments has unspecified or wrong shape.
+    """
+    if args is None or (isinstance(args, (list, tuple)) and not args):
+        raise ValueError("`args` must be specified")
+    if not isinstance(args, (list, tuple)):
+        args = [args]
+
+    # Calculate the total size of arguments on dimension 1.
+    total_arg_size = 0
+    shapes = [a.get_shape().as_list() for a in args]
+    for shape in shapes:
+        if len(shape) != 2:
+            raise ValueError(
+                "Linear is expecting 2D arguments: %s" % str(shapes))
+        if not shape[1]:
+            raise ValueError(
+                "Linear expects shape[1] of arguments: %s" % str(shapes))
+        else:
+            total_arg_size += shape[1]
