@@ -121,3 +121,17 @@ def linear(args, output_size, bias, bias_start=0.0, scope=None):
                 "Linear expects shape[1] of arguments: %s" % str(shapes))
         else:
             total_arg_size += shape[1]
+
+    # Now the computation.
+    with tf.variable_scope(scope or "Linear"):
+        matrix = tf.get_variable("Matrix", [total_arg_size, output_size])
+        if len(args) == 1:
+            res = tf.matmul(args[0], matrix)
+        else:
+            res = tf.matmul(tf.concat(args, 1), matrix)
+        if not bias:
+            return res
+        bias_term = tf.get_variable(
+            "Bias", [output_size],
+            initializer=tf.constant_initializer(bias_start))
+    return res + bias_term
