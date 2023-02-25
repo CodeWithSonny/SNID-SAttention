@@ -4,4 +4,5 @@ from snidsa_cell import *
 class SNIDSA(object):
     def __init__(self, config, A, is_training=True):
 
-        self.num_nodes 
+        self.num_nodes = config.num_nodes
+        self.embedding_dim = confi
