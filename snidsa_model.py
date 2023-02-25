@@ -5,4 +5,5 @@ class SNIDSA(object):
     def __init__(self, config, A, is_training=True):
 
         self.num_nodes = config.num_nodes
-        self.embedding_dim = confi
+        self.embedding_dim = config.embedding_dim
+        self.hidden_dim = config.
