@@ -18,4 +18,6 @@ class SNIDSA(object):
         with tf.device("/cpu:0"):
             self.embedding = tf.get_variable(
                 "embedding", [self.num_nodes,
-                    self.embedding_
+                    self.embedding_dim], dtype=tf.float32)
+
+        self.plac
