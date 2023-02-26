@@ -8,4 +8,7 @@ class SNIDSA(object):
         self.embedding_dim = config.embedding_dim
         self.hidden_dim = config.hidden_dim
         self.num_layers = config.num_layers
-        # self.model = config.mod
+        # self.model = config.model
+
+        self.learning_rate = config.learning_rate
+     
