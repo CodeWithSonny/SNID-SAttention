@@ -13,4 +13,4 @@ class SNIDSA(object):
         self.learning_rate = config.learning_rate
         self.dropout = config.dropout
 
-        self._A = tf.constan
+        self._A = tf.constant(A, dtype=tf.float32, name="adjacency_matrix")
