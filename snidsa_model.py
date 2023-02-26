@@ -6,4 +6,5 @@ class SNIDSA(object):
 
         self.num_nodes = config.num_nodes
         self.embedding_dim = config.embedding_dim
-        self.hidden_dim = config.
+        self.hidden_dim = config.hidden_dim
+        self.num_layers = config.
