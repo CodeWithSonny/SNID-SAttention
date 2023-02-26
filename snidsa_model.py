@@ -16,4 +16,5 @@ class SNIDSA(object):
         self._A = tf.constant(A, dtype=tf.float32, name="adjacency_matrix")
 
         with tf.device("/cpu:0"):
-            self.em
+            self.embedding = tf.get_variable(
+                "embedding", [self
