@@ -11,4 +11,6 @@ class SNIDSA(object):
         # self.model = config.model
 
         self.learning_rate = config.learning_rate
-     
+        self.dropout = config.dropout
+
+        self._A = tf.constan
