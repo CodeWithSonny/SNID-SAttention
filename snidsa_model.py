@@ -14,3 +14,6 @@ class SNIDSA(object):
         self.dropout = config.dropout
 
         self._A = tf.constant(A, dtype=tf.float32, name="adjacency_matrix")
+
+        with tf.device("/cpu:0"):
+            self.em
