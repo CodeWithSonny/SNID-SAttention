@@ -22,4 +22,6 @@ class SNIDSA(object):
 
         self.placeholders()
         self.loss_mask()
-        self.graph_information
+        self.graph_information()
+        self.recurrent_layer()
+        self.cos
