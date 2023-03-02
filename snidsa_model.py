@@ -20,4 +20,6 @@ class SNIDSA(object):
                 "embedding", [self.num_nodes,
                     self.embedding_dim], dtype=tf.float32)
 
-        self.plac
+        self.placeholders()
+        self.loss_mask()
+        self.graph_information
