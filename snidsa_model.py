@@ -24,4 +24,7 @@ class SNIDSA(object):
         self.loss_mask()
         self.graph_information()
         self.recurrent_layer()
-        self.cos
+        self.cost()
+        self.optimize()
+
+    def placeholders(s
