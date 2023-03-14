@@ -28,4 +28,5 @@ class SNIDSA(object):
         self.optimize()
 
     def placeholders(self):
-        self.batch_size = tf.placeholde
+        self.batch_size = tf.placeholder(tf.int32, None)
+        self._inputs = tf.pla
