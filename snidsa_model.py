@@ -31,4 +31,5 @@ class SNIDSA(object):
         self.batch_size = tf.placeholder(tf.int32, None)
         self._inputs = tf.placeholder(tf.int32, [None, None]) # [batch_size, num_steps]
         self._targets = tf.placeholder(tf.int32, [None, None])
-        self._seqle
+        self._seqlen = tf.placeholder(tf.int32, [None])
+    
