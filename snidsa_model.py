@@ -39,4 +39,7 @@ class SNIDSA(object):
 
     def graph_information(self):
         _neighbors = tf.nn.embedding_lookup(self._A, self._inputs)
-        return 
+        return _neighbors
+
+    def input_embedding(self):
+        _i
