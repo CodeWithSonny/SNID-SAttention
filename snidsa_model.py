@@ -37,4 +37,5 @@ class SNIDSA(object):
     def loss_mask(self):
         self._target_mask = tf.sequence_mask(self._seqlen, dtype=tf.float32)
 
-    def graph_inf
+    def graph_information(self):
+        _neighbors = tf.nn.embe
