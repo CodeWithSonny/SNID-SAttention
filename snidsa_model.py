@@ -35,4 +35,4 @@ class SNIDSA(object):
         self.num_steps = tf.placeholder(tf.int32, None)
 
     def loss_mask(self):
-       
+        self._target_mask = tf.sequence_mask(self._se
