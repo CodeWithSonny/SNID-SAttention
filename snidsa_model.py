@@ -42,4 +42,4 @@ class SNIDSA(object):
         return _neighbors
 
     def input_embedding(self):
-        _i
+        _inputs = tf.nn.embedding_lookup(self.embedding, self._i
