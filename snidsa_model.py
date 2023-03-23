@@ -42,4 +42,7 @@ class SNIDSA(object):
         return _neighbors
 
     def input_embedding(self):
-        _inputs = tf.nn.embedding_lookup(self.embedding, self._i
+        _inputs = tf.nn.embedding_lookup(self.embedding, self._inputs)
+        return _inputs
+
+    def recurrent_lay
