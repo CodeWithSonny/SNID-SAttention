@@ -38,4 +38,5 @@ class SNIDSA(object):
         self._target_mask = tf.sequence_mask(self._seqlen, dtype=tf.float32)
 
     def graph_information(self):
-        _neighbors = tf.nn.embe
+        _neighbors = tf.nn.embedding_lookup(self._A, self._inputs)
+        return 
