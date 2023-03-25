@@ -45,4 +45,6 @@ class SNIDSA(object):
         _inputs = tf.nn.embedding_lookup(self.embedding, self._inputs)
         return _inputs
 
-    def recurrent_lay
+    def recurrent_layer(self):
+        def creat_cell():
+        
