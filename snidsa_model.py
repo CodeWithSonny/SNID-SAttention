@@ -47,4 +47,4 @@ class SNIDSA(object):
 
     def recurrent_layer(self):
         def creat_cell():
-        
+            cell = SnidsaCell(self.hidden_dim, self
