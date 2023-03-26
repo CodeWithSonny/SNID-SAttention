@@ -50,4 +50,6 @@ class SNIDSA(object):
             cell = SnidsaCell(self.hidden_dim, self.embedding)
             if self.dropout < 1:
                 return tf.contrib.rnn.DropoutWrapper(cell,
-                    output_keep_prob=se
+                    output_keep_prob=self.dropout)
+            else:
+         
