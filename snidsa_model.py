@@ -58,3 +58,5 @@ class SNIDSA(object):
         cell = tf.contrib.rnn.MultiRNNCell(cells, state_is_tuple=True)
 
         emb_inputs = self.input_embedding()
+        _neighbors = self.graph_information()
+        
