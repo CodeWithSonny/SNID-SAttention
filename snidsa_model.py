@@ -62,4 +62,5 @@ class SNIDSA(object):
         _outputs, _ = tf.nn.dynamic_rnn(cell=cell,
             inputs=(emb_inputs,_neighbors), sequence_length=self._seqlen, dtype=tf.float32)
 
-        output = tf.resha
+        output = tf.reshape(tf.concat(_outputs, 1), [-1, self.hidden_dim])
+     
