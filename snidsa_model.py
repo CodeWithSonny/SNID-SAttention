@@ -59,4 +59,5 @@ class SNIDSA(object):
 
         emb_inputs = self.input_embedding()
         _neighbors = self.graph_information()
-        
+        _outputs, _ = tf.nn.dynamic_rnn(cell=cell,
+  
