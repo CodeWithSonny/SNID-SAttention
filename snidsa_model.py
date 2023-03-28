@@ -55,4 +55,4 @@ class SNIDSA(object):
                 return cell
 
         cells = [creat_cell() for _ in range(self.num_layers)]
-        cell = 
+        cell = tf.contrib.rnn.MultiRNNCell(cells, state_is_
