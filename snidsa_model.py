@@ -55,4 +55,6 @@ class SNIDSA(object):
                 return cell
 
         cells = [creat_cell() for _ in range(self.num_layers)]
-        cell = tf.contrib.rnn.MultiRNNCell(cells, state_is_
+        cell = tf.contrib.rnn.MultiRNNCell(cells, state_is_tuple=True)
+
+        emb_inputs = self.input_embedding()
