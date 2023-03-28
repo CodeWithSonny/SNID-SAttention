@@ -54,4 +54,5 @@ class SNIDSA(object):
             else:
                 return cell
 
-        cells = [creat_cell() for _ in range
+        cells = [creat_cell() for _ in range(self.num_layers)]
+        cell = 
