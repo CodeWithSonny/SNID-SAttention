@@ -52,4 +52,6 @@ class SNIDSA(object):
                 return tf.contrib.rnn.DropoutWrapper(cell,
                     output_keep_prob=self.dropout)
             else:
-         
+                return cell
+
+        cells = [creat_cell() for _ in range
