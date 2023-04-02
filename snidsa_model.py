@@ -63,4 +63,5 @@ class SNIDSA(object):
             inputs=(emb_inputs,_neighbors), sequence_length=self._seqlen, dtype=tf.float32)
 
         output = tf.reshape(tf.concat(_outputs, 1), [-1, self.hidden_dim])
-     
+        softmax_w = tf.get_variable(
+            "soft
