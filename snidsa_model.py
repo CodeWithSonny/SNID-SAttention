@@ -64,4 +64,5 @@ class SNIDSA(object):
 
         output = tf.reshape(tf.concat(_outputs, 1), [-1, self.hidden_dim])
         softmax_w = tf.get_variable(
-            "softmax_w", [self.hidden_dim, self.num_nodes], dtype=tf.flo
+            "softmax_w", [self.hidden_dim, self.num_nodes], dtype=tf.float32)
+        softmax_b = tf.get_variable("softmax_b", [se
