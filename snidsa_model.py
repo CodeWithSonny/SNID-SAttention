@@ -68,4 +68,7 @@ class SNIDSA(object):
         softmax_b = tf.get_variable("softmax_b", [self.num_nodes], dtype=tf.float32)
         self.flat_logits = tf.nn.xw_plus_b(output, softmax_w, softmax_b)
          # Reshape logits to be a 3-D tensor for sequence loss
-        self._logits = tf.reshape(self.flat_logits, [self.batch_size, self
+        self._logits = tf.reshape(self.flat_logits, [self.batch_size, self.num_steps, self.num_nodes])
+
+    def cost(self):
+  
