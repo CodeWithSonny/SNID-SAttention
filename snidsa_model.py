@@ -71,4 +71,4 @@ class SNIDSA(object):
         self._logits = tf.reshape(self.flat_logits, [self.batch_size, self.num_steps, self.num_nodes])
 
     def cost(self):
-  
+        crossent = tf.contrib.seq2seq.sequence
