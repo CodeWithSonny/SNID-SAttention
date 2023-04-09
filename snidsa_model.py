@@ -77,4 +77,5 @@ class SNIDSA(object):
             self._target_mask,
             average_across_timesteps=False,
             average_across_batch=False)
-        l
+        loss = tf.reduce_sum(crossent, axis=[0])
+        batc
