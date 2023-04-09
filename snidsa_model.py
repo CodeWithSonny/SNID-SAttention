@@ -73,4 +73,5 @@ class SNIDSA(object):
     def cost(self):
         crossent = tf.contrib.seq2seq.sequence_loss(
             self._logits,
-     
+            self._targets,
+            self._target_mask
