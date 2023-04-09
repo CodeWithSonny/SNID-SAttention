@@ -74,4 +74,6 @@ class SNIDSA(object):
         crossent = tf.contrib.seq2seq.sequence_loss(
             self._logits,
             self._targets,
-            self._target_mask
+            self._target_mask,
+            average_across_timesteps=False,
+   
