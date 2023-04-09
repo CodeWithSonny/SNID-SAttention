@@ -76,4 +76,5 @@ class SNIDSA(object):
             self._targets,
             self._target_mask,
             average_across_timesteps=False,
-   
+            average_across_batch=False)
+        l
