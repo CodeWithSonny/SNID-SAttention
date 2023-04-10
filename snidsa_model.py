@@ -83,4 +83,5 @@ class SNIDSA(object):
         loss /= batch_avg
         # Update the cost
         self.cost = tf.reduce_sum(loss)
-        # Calculate
+        # Calculate negative log-likelihood
+        self.nll = tf.redu
