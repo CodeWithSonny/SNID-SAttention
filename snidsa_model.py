@@ -80,4 +80,6 @@ class SNIDSA(object):
         loss = tf.reduce_sum(crossent, axis=[0])
         batch_avg = tf.reduce_sum(self._target_mask, axis=[0])
         batch_avg += 1e-12  # to avoid division by 0 for all-0 weights
-       
+        loss /= batch_avg
+        # Update the cost
+        
