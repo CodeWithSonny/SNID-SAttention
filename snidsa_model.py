@@ -82,4 +82,5 @@ class SNIDSA(object):
         batch_avg += 1e-12  # to avoid division by 0 for all-0 weights
         loss /= batch_avg
         # Update the cost
-        
+        self.cost = tf.reduce_sum(loss)
+        # Calculate
