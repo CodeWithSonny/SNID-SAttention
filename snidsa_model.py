@@ -84,4 +84,6 @@ class SNIDSA(object):
         # Update the cost
         self.cost = tf.reduce_sum(loss)
         # Calculate negative log-likelihood
-        self.nll = tf.redu
+        self.nll = tf.reduce_sum(crossent, axis = [1])
+
+        pred
