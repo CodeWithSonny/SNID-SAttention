@@ -86,4 +86,5 @@ class SNIDSA(object):
         # Calculate negative log-likelihood
         self.nll = tf.reduce_sum(crossent, axis = [1])
 
-        pred
+        pred = tf.nn.softmax(self.flat_logits)
+        self.pred = tf.resh
