@@ -87,4 +87,7 @@ class SNIDSA(object):
         self.nll = tf.reduce_sum(crossent, axis = [1])
 
         pred = tf.nn.softmax(self.flat_logits)
-        self.pred = tf.reshape(pred, [self.batch_size, self.num_steps, self
+        self.pred = tf.reshape(pred, [self.batch_size, self.num_steps, self.num_nodes])
+
+    def optimize(self):
+        op
