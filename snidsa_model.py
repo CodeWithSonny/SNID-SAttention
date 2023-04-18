@@ -90,4 +90,5 @@ class SNIDSA(object):
         self.pred = tf.reshape(pred, [self.batch_size, self.num_steps, self.num_nodes])
 
     def optimize(self):
-        optimizer = tf.train.AdamOptimizer(learning_rate=sel
+        optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate)
+        self.optim = optimiz
