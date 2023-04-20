@@ -91,4 +91,4 @@ class SNIDSA(object):
 
     def optimize(self):
         optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate)
-        self.optim = optimiz
+        self.optim = optimizer.minimize(self.cost)
