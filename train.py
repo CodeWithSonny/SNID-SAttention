@@ -78,3 +78,50 @@ def args_setting(config):
     parser.add_argument("-l", "--lr", type=float, help="learning rate")
     parser.add_argument("-x", "--xdim", type=int, help="embedding dimension")
     parser.add_argument("-e", "--hdim", type=int, help="hidden dimension")
+    parser.add_argument("-d", "--data", help="data name")
+    parser.add_argument("-g", "--gpu", help="gpu id")
+    parser.add_argument("-b", "--bs", type=int, help="batch size")
+    parser.add_argument("-f", "--freq", type=int, help="validation frequency")
+    parser.add_argument("-n", "--nepoch", type=int, help="number of training epochs")
+    args = parser.parse_args()
+    if args.lr:
+        config.learning_rate = args.lr
+    if args.xdim:
+        config.embedding_dim = args.xdim
+    if args.hdim:
+        config.hidden_dim = args.hdim
+    if args.bs:
+        config.batch_size = args.bs
+    if args.data:
+        config.data_name = args.data
+    if args.gpu:
+        config.gpu_no = args.gpu
+    if args.freq:
+        config.valid_freq = args.freq
+        config.patience = int(10/config.valid_freq) + 1
+    if args.nepoch:
+        config.num_epochs = args.nepoch
+    return config
+
+def train(argv):
+    config = Config()
+    config = args_setting(config)
+
+    data_name = config.data_name
+    os.environ["CUDA_VISIBLE_DEVICES"] = config.gpu_no
+    num_epochs = config.num_epochs
+
+    # data load
+    train_data, valid_data, test_data, nodes, node_to_id = \
+        read_raw_data(data_name + '-cascades')
+    config.num_nodes = len(nodes)
+    train_size = train_data[2]
+    valid_size = valid_data[2]
+    test_size = test_data[2]
+    print (train_size, valid_size, test_size)
+    A = read_graph(data_name + '-graph', node_to_id)
+    input_train = Input(config, train_data)
+    input_valid = Input(config, valid_data)
+    input_test = Input(config, test_data)
+
+    # Model create
