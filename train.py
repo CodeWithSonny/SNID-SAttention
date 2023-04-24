@@ -125,3 +125,49 @@ def train(argv):
     input_test = Input(config, test_data)
 
     # Model create
+    model = SNIDSA(config, A)
+    tfconfig = tf.ConfigProto()
+    tfconfig.gpu_options.allow_growth = True
+
+    sess = tf.Session(config=tfconfig)
+    tf.set_random_seed(config.random_seed)
+
+    # Parameter Initialization
+    sess.run(tf.global_variables_initializer())
+
+    # Record test results at best validation epoch with early stopping
+    max_logits = float('inf')
+    stop_count = 0
+    best_mrr = 0
+    best_ac1 = 0
+    best_ac5 = 0
+    best_ac10 = 0
+    best_ac50 = 0
+    best_ac100 = 0
+    best_valid_epoch = 0
+
+    # Print Training information
+    train_info = "Data: {0}, Model: {1}, GPU Num: {2}, Learning Rate: {3:.3f}, Embedding Size: {4}, Hidden Size: {5}, Batch Size: {6}"
+    print(train_info.format(config.data_name, config.model, config.gpu_no, config.learning_rate, config.embedding_dim, config.hidden_dim, config.batch_size))
+    print('Start training...')
+
+    # Training Process
+    for epoch in range(num_epochs):
+        epoch_logits = 0
+        valid_logits = 0
+        # test_logits = 0
+        valid_mrr = 0
+        valid_ac1 = 0
+        valid_ac5 = 0
+        valid_ac10 = 0
+        valid_ac50 = 0
+        valid_ac100 = 0
+        test_mrr = 0
+        test_ac1 = 0
+        test_ac5 = 0
+        test_ac10 = 0
+        test_ac50 = 0
+        test_ac100 = 0
+
+        msg = 'Epoch ' + str(epoch+1) + '/' + str(num_epochs) + ' (Train)'
+        for i in tqdm(range(input_train.batch_num), desc=msg):
