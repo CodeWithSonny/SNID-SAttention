@@ -171,3 +171,46 @@ def train(argv):
 
         msg = 'Epoch ' + str(epoch+1) + '/' + str(num_epochs) + ' (Train)'
         for i in tqdm(range(input_train.batch_num), desc=msg):
+            x_batch, y_batch, seq_length, batch_size, num_steps = input_train.next_batch()
+            feed_dict = {model._inputs: x_batch, model._targets: y_batch, model._seqlen: seq_length, model.batch_size: batch_size, model.num_steps: num_steps}
+            _, batch_cost = sess.run([model.optim, model.nll], feed_dict=feed_dict)
+            epoch_logits += np.sum(batch_cost)
+        msg = "Train NLL: {0:>6.3f}"
+        print(msg.format(epoch_logits/float(train_size)))
+
+        if (epoch+1)%config.valid_freq == 0:
+            msg = 'Epoch ' + str(epoch+1) + '/' + str(num_epochs) + ' (Val.)'
+            for j in tqdm(range(input_valid.batch_num), desc=msg):
+                x_batch, y_batch, seq_length, batch_size, num_steps = input_valid.next_batch()
+                feed_dict = {model._inputs: x_batch, model._targets: y_batch, model._seqlen: seq_length, model.batch_size: batch_size, model.num_steps: num_steps}
+                valid_nll, valid_pred = sess.run([model.nll, model.pred], feed_dict=feed_dict)
+                valid_logits += np.sum(valid_nll)
+                mrr, ac1, ac5, ac10, ac50, ac100 = rank_eval(valid_pred, y_batch, seq_length)
+                valid_mrr += mrr
+                valid_ac1 += ac1
+                valid_ac5 += ac5
+                valid_ac10 += ac10
+                valid_ac50 += ac50
+                valid_ac100 += ac100
+
+            msg = 'Epoch ' + str(epoch+1) + '/' + str(num_epochs) + ' (Test)'
+            for k in tqdm(range(input_test.batch_num), desc=msg):
+                x_batch, y_batch, seq_length, batch_size, num_steps = input_test.next_batch()
+                feed_dict = {model._inputs: x_batch, model._targets: y_batch, model._seqlen: seq_length, model.batch_size: batch_size, model.num_steps: num_steps}
+                test_pred = sess.run(model.pred, feed_dict=feed_dict)
+                mrr, ac1, ac5, ac10, ac50, ac100 = rank_eval(test_pred, y_batch, seq_length)
+                test_mrr += mrr
+                test_ac1 += ac1
+                test_ac5 += ac5
+                test_ac10 += ac10
+                test_ac50 += ac50
+                test_ac100 += ac100
+
+            msg = "Val. NLL: {0:>6.3f}"
+            print(msg.format(valid_logits/float(valid_size)))
+
+            msg = "Val. MRR: {0:>6.5f}, ACC1: {1:>6.5f}, ACC5: {2:>6.5f}, ACC10: {3:>6.5f}, ACC50: {4:>6.5f}, ACC100: {5:>6.5f}"
+            print(msg.format( valid_mrr/float(valid_size), valid_ac1/float(valid_size), valid_ac5/float(valid_size), valid_ac10/float(valid_size), valid_ac50/float(valid_size), valid_ac100/float(valid_size)))
+
+            msg = "Test MRR: {0:>6.5f}, ACC1: {1:>6.5f}, ACC5: {2:>6.5f}, ACC10: {3:>6.5f}, ACC50: {4:>6.5f}, ACC100: {5:>6.5f}"
+            print(msg.format( test_mrr/float(test_size), test_ac1/float(test_size), test_ac5/float(test_size), test_ac10/float(test_size), test_ac50/float(test_size), test_ac100/float(test_size)))
