@@ -214,3 +214,43 @@ def train(argv):
 
             msg = "Test MRR: {0:>6.5f}, ACC1: {1:>6.5f}, ACC5: {2:>6.5f}, ACC10: {3:>6.5f}, ACC50: {4:>6.5f}, ACC100: {5:>6.5f}"
             print(msg.format( test_mrr/float(test_size), test_ac1/float(test_size), test_ac5/float(test_size), test_ac10/float(test_size), test_ac50/float(test_size), test_ac100/float(test_size)))
+
+            if valid_logits < max_logits: #Early stop with checking negative log-likelihood on validation set
+                max_logits = valid_logits
+                best_valid_epoch = epoch+1
+                # Record test results at best validation epoch
+                best_mrr = test_mrr
+                best_ac1 = test_ac1
+                best_ac5 = test_ac5
+                best_ac10 = test_ac10
+                best_ac50 = test_ac50
+                best_ac100 = test_ac100
+                stop_count = 0
+                # To do: save_model()
+            else:
+                stop_count += 1
+
+            if stop_count==config.patience:
+                break
+
+    print('Finish training...')
+
+    print('Best valid negative log-likelihood at Epoch: %d ' % best_valid_epoch)
+
+    msg = "Test MRR: {0:>6.5f}, ACC1: {1:>6.5f}, ACC5: {2:>6.5f}, ACC10: {3:>6.5f}, ACC50: {4:>6.5f}, ACC100: {5:>6.5f}"
+    print(msg.format(best_mrr/float(test_size), best_ac1/float(test_size), best_ac5/float(test_size), best_ac10/float(test_size), best_ac50/float(test_size), best_ac100/float(test_size) ))
+
+    # Save results of best validation model
+    with open('results.txt', 'a') as f:
+        f.write('Test results on ' + data_name + ':\n')
+        f.write('MRR: '+ str(best_mrr/float(test_size)) + '\n')
+        f.write('ACC1: '+ str(best_ac1/float(test_size)) + '\n')
+        f.write('ACC5: '+ str(best_ac5/float(test_size)) + '\n')
+        f.write('ACC10: '+ str(best_ac10/float(test_size)) + '\n')
+        f.write('ACC50: '+ str(best_ac50/float(test_size)) + '\n')
+        f.write('ACC100: '+ str(best_ac100/float(test_size)) + '\n\n')
+
+    sess.close()
+
+if __name__ == '__main__':
+    train(sys.argv)
